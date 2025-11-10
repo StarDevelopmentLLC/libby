@@ -1,10 +1,6 @@
 package net.byteflux.libby;
 
-import com.grack.nanojson.JsonArray;
-import com.grack.nanojson.JsonObject;
-import com.grack.nanojson.JsonParser;
-import com.grack.nanojson.JsonParserException;
-import com.grack.nanojson.JsonReader;
+import com.grack.nanojson.*;
 import net.byteflux.libby.classloader.IsolatedClassLoader;
 import net.byteflux.libby.logging.LogLevel;
 import net.byteflux.libby.logging.Logger;
@@ -12,42 +8,16 @@ import net.byteflux.libby.logging.adapters.LogAdapter;
 import net.byteflux.libby.relocation.Relocation;
 import net.byteflux.libby.relocation.RelocationHelper;
 import net.byteflux.libby.transitive.TransitiveDependencyHelper;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
-import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.UnknownHostException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import javax.xml.parsers.*;
+import java.io.*;
+import java.net.*;
+import java.nio.file.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static java.util.Objects.requireNonNull;
 
@@ -67,6 +37,7 @@ import static java.util.Objects.requireNonNull;
  *
  * @see Library
  */
+@SuppressWarnings("resource")
 public abstract class LibraryManager {
     /**
      * Wrapped plugin logger
@@ -262,20 +233,22 @@ public abstract class LibraryManager {
         for (String repository : library.getRepositories()) {
             if (snapshot) {
                 String url = resolveSnapshot(repository, library);
-                if (url != null)
+                if (url != null) {
                     urls.add(repository + url);
+                }
             } else {
-                urls.add(repository + library.getPath());
+                urls.add(repository + library.getPartialPath() + library.getPath());
             }
         }
 
         for (String repository : getRepositories()) {
             if (snapshot) {
                 String url = resolveSnapshot(repository, library);
-                if (url != null)
+                if (url != null) {
                     urls.add(repository + url);
+                }
             } else {
-                urls.add(repository + library.getPath());
+                urls.add(repository + library.getPartialPath() + library.getPath());
             }
         }
 

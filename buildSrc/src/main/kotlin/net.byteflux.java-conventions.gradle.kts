@@ -34,22 +34,23 @@ repositories {
     }
 }
 
-group = "xyz.kyngs.libby"
-version = "1.7.1"
+group = "com.stardevllc.libby"
+version = "1.0.0"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+
     withSourcesJar()
 }
 
 publishing {
     repositories {
         maven {
-            name = "kyngsRepo"
+            name = "stardev"
             url = uri(
-                "https://repo.kyngs.xyz/" + (if (project.version.toString()
-                        .contains("SNAPSHOT")
-                ) "snapshots" else "releases") + "/"
+                "https://repo.stardevllc.com/releases"
             )
             credentials(PasswordCredentials::class)
             authentication {

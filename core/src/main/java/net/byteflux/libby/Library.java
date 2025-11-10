@@ -163,12 +163,14 @@ public class Library {
         this.relocations = relocations != null ? Collections.unmodifiableList(new LinkedList<>(relocations)) : Collections.emptyList();
 
         this.partialPath = this.groupId.replace('.', '/') + '/' + artifactId + '/' + version + '/';
-        String path = this.partialPath + artifactId + '-' + version;
+        String path = artifactId + '-' + version;
         if (hasClassifier()) {
             path += '-' + classifier;
         }
 
         this.path = path + ".jar";
+        
+        System.out.println("Library Path: " + this.path);
 
         this.repositories = repositories != null ? Collections.unmodifiableList(new LinkedList<>(repositories)) : Collections.emptyList();
         relocatedPath = hasRelocations() ? path + "-relocated.jar" : null;
