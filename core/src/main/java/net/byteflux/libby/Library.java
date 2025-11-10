@@ -170,8 +170,6 @@ public class Library {
 
         this.path = path + ".jar";
         
-        System.out.println("Library Path: " + this.path);
-
         this.repositories = repositories != null ? Collections.unmodifiableList(new LinkedList<>(repositories)) : Collections.emptyList();
         relocatedPath = hasRelocations() ? path + "-relocated.jar" : null;
         this.isolatedLoad = isolatedLoad;
